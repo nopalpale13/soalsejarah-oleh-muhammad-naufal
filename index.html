@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soal Materi Sejarah Dunia - Ujian Online</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-hover: #1e40af;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #eff6ff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .timer {
+            color: var(--danger);
+            font-size: 18px;
+        }
+
+        .question-box {
+            margin-bottom: 25px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+        }
+
+        .validation-msg {
+            color: var(--danger);
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Result styling */
+        .result-box {
+            text-align: left;
+        }
+
+        .result-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .score-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .score-num {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .cheat-status {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 5px;
+            white-space: pre-line;
+        }
+
+        .cheat-jujur {
+            color: var(--success);
+        }
+
+        .cheat-curang {
+            color: var(--danger);
+        }
+
+        .review-item {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .review-q {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .user-ans-correct {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .user-ans-wrong {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .correct-ans {
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        .warning-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .warning-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .warning-card h3 {
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+
+        .warning-card button {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Warning Popup untuk Kecurangan -->
+    <div id="warning-popup" class="warning-overlay hidden">
+        <div class="warning-card">
+            <h3>Peringatan Kecurangan!</h3>
+            <p id="warning-message">Anda terdeteksi meninggalkan halaman ujian.</p>
+            <button class="btn" onclick="closeWarning()">Saya Mengerti</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Soal Materi Sejarah Dunia</h1>
+            <p>Pengembang/Pembuat: Muhammad Naufal | Kota Cilegon</p>
+        </header>
+
+        <!-- Form Identitas -->
+        <div id="identity-section">
+            <div class="form-group">
+                <label for="fullname">Nama Lengkap</label>
+                <input type="text" id="fullname" placeholder="Masukkan nama lengkap Anda" required>
+            </div>
+            <div class="form-group">
+                <label for="class-name">Kelas</label>
+                <input type="text" id="class-name" placeholder="Masukkan kelas Anda (contoh: XII IPA 1)" required>
+            </div>
+            <div class="form-group">
+                <label for="school">Sekolah</label>
+                <input type="text" id="school" placeholder="Masukkan nama sekolah Anda" required>
+            </div>
+            <div class="form-group">
+                <label for="subject-select">Mata Pelajaran</label>
+                <select id="subject-select">
+                    <option value="sejarah">Sejarah Dunia (45 Soal)</option>
+                </select>
+            </div>
+            <button class="btn" onclick="startQuiz()">Mulai Kerjakan Soal</button>
+        </div>
+
+        <!-- Area Ujian -->
+        <div id="quiz-section" class="hidden">
+            <div class="quiz-header">
+                <span id="question-number">Soal 1 dari 45</span>
+                <span class="timer" id="timer-display">90:00</span>
+            </div>
+
+            <div class="question-box">
+                <div class="question-text" id="question-text"></div>
+                <div class="options-container" id="options-container"></div>
+                <div class="validation-msg" id="validation-msg">⚠️️ Harap pilih salah satu jawaban terlebih dahulu sebelum melanjutkan!</div>
+            </div>
+
+            <button class="btn" id="next-btn" onclick="nextQuestion()">Selanjutnya</button>
+        </div>
+
+        <!-- Area Hasil -->
+        <div id="result-section" class="hidden">
+            <div class="result-title" id="completion-message"></div>
+            
+            <div class="score-card">
+                <div>Nilai Anda</div>
+                <div class="score-num" id="score-display">0</div>
+                <div id="cheat-status-display" class="cheat-status"></div>
+            </div>
+
+            <h3 style="margin-bottom: 15px;">Pembahasan & Corrected Answer:</h3>
+            <div id="review-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Database 45 Soal Sejarah Dunia Berlandaskan Faktual
+        const historyQuestions = [
+            { q: "Perang Dunia I dipicu oleh pembunuhan Putera Mahkota Austria-Hongaria yang bernama...", a: ["Archduke Franz Ferdinand", "Kaisar Wilhelm II", "Winston Churchill", "Adolf Hitler"], c: 0 },
+            { q: "Revolusi Industri pertama kali dimulai pada abad ke-18 di negara...", a: ["Prancis", "Jerman", "Inggris", "Amerika Serikat"], c: 2 },
+            { q: "Penemu lampu pijar yang berhasil mematenkan dan memproduksi secara komersial adalah...", a: ["Nikola Tesla", "Thomas Alva Edison", "Alexander Graham Bell", "Michael Faraday"], c: 1 },
+            { q: "Peristiwa Proklamasi Kemerdekaan Indonesia terjadi pada tanggal...", a: ["17 Agustus 1945", "18 Agustus 1945", "10 November 1945", "28 Oktober 1928"], c: 0 },
+            { q: "Sultan Kerajaan Utsmaniyah (Ottoman) yang berhasil menaklukkan Konstantinopel pada tahun 1453 adalah...", a: ["Suleiman the Magnificent", "Mehmed II (Muhammad Al-Fatih)", "Osman I", "Selim I"], c: 1 },
+            { q: "Candi Borobudur yang merupakan candi Buddha terbesar di dunia dibangun oleh wangsa...", a: ["Sanjaya", "Syailendra", "Isyana", "Majapahit"], c: 1 },
+            { q: "Tokoh yang memimpin Uni Soviet pada masa Perang Dunia II dan awal Perang Dingin adalah...", a: ["Vladimir Lenin", "Joseph Stalin", "Nikita Khrushchev", "Mikhail Gorbachev"], c: 1 },
+            { q: "Tembok Berlin yang memisahkan Jerman Barat dan Jerman Timur runtuh pada tahun...", a: ["1989", "1991", "1975", "1945"], c: 0 },
+            { q: "Penemu telepon pertama yang dipatenkan secara luas adalah...", a: ["Guglielmo Marconi", "Alexander Graham Bell", "Albert Einstein", "Isaac Newton"], c: 1 },
+            { q: "Pahlawan nasional Indonesia yang memimpin perlawanan dalam Pertempuran Surabaya 10 November 1945 adalah...", a: ["Bung Tomo", "Jenderal Soedirman", "Ir. Soekarno", "Sutan Sjahrir"], c: 0 },
+            { q: "Perang Dunia II di Pasifik resmi berakhir setelah Amerika Serikat menjatuhkan bom atom di dua kota Jepang, yaitu...", a: ["Tokyo dan Kyoto", "Hiroshima dan Nagasaki", "Osaka dan Nagoya", "Yokohama dan Kobe"], c: 1 },
+            { q: "Prasasti Yupa merupakan bukti sejarah tertua masuknya Hindu di Indonesia yang berasal dari Kerajaan...", a: ["Kutai", "Tarumanagara", "Sriwijaya", "Singhasari"], c: 0 },
+            { q: "Kekaisaran Romawi Pertama kali dipimpin oleh kaisar pertamanya yang bernama...", a: ["Julius Caesar", "Augustus (Octavianus)", "Nero", "Marcus Aurelius"], c: 1 },
+            { q: "Revolusi Prancis yang meletus pada tahun 1789 ditandai dengan penyerbuan penjara...", a: ["Bastille", "Louvre", "Versailles", "Guantanamo"], c: 0 },
+            { q: "Penemu penisilin (antibiotik pertama) pada tahun 1928 yang mengubah dunia medis adalah...", a: ["Louis Pasteur", "Alexander Fleming", "Robert Koch", "Edward Jenner"], c: 1 },
+            { q: "Organisasi PBB (Perserikatan Bangsa-Bangsa) didirikan secara resmi pada tahun 1945 setelah berakhirnya...", a: ["Perang Dunia I", "Perang Dunia II", "Perang Dingin", "Perang Salib"], c: 1 },
+            { q: "Kerajaan Bahari terbesar di Asia Tenggara yang menjadi pusat penyebaran agama Buddha di Sumatra adalah...", a: ["Majapahit", "Sriwijaya", "Mataram Kuno", "Kediri"], c: 1 },
+            { q: "Terusan Suez yang menghubungkan Laut Mediterania dan Laut Merah dibuka secara resmi pada tahun...", a: ["1869", "1914", "1945", "1800"], c: 0 },
+            { q: "Konferensi Asia-Afrika (KAA) pertama kali diselenggarakan pada tahun 1955 di kota...", a: ["Jakarta", "Bandung", "Bogor", "Yogyakarta"], c: 1 },
+            { q: "Tokoh yang mencetuskan Teori Relativitas dan menjadi simbol kejeniusan abad ke-20 adalah...", a: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"], c: 1 },
+            { q: "Dokumen penting Inggris pada tahun 1215 yang membatasi kekuasaan absolut raja dinamakan...", a: ["Magna Carta", "Bill of Rights", "Declaration of Independence", "Versailles Treaty"], c: 0 },
+            { q: "Pencetak Alkitab menggunakan sistem mesin cetak bergerak pertama di Eropa dipelopori oleh...", a: ["Johannes Gutenberg", "Galileo Galilei", "Leonardo da Vinci", "Martin Luther"], c: 0 },
+            { q: "Sumpah Pemuda dicetuskan oleh pemuda-pemudi Indonesia pada tanggal...", a: ["17 Agustus 1945", "28 Oktober 1928", "20 Mei 1908", "1 Juni 1945"], c: 1 },
+            { q: "Peristiwa pembubaran Uni Soviet yang menandai berakhirnya Perang Dingin terjadi pada tahun...", a: ["1985", "1989", "1991", "1995"], c: 2 },
+            { q: "Tokoh navigasi asal Portugis yang pertama kali sampai di Malaka pada tahun 1511 adalah...", a: ["Vasco da Gama", "Afonso de Albuquerque", "Christopher Columbus", "Ferdinand Magellan"], c: 1 },
+            { q: "Piramida Giza dan Sphinx terletak di negara...", a: ["Irak", "Mesir", "Yunani", "Turki"], c: 1 },
+            { q: "Penemu mesin uap yang mendorong meluasnya Revolusi Industri adalah...", a: ["James Watt", "George Stephenson", "Nikola Tesla", "Henry Ford"], c: 0 },
+            { q: "Sistem Tanam Paksa (Cultuurstelsel) di Indonesia diperkenalkan oleh Gubernur Jenderal...", a: ["H.W. Daendels", "Johannes van den Bosch", "Raffles", "Jan Pieterszoon Coen"], c: 1 },
+            { q: "Perang Saudara Amerika (American Civil War) dipicu oleh isu perbudakan dan dipimpin oleh Presiden...", a: ["George Washington", "Abraham Lincoln", "Thomas Jefferson", "Theodore Roosevelt"], c: 1 },
+            { q: "Kota Hiroshima dijatuhi bom atom oleh Amerika Serikat pada tanggal...", a: ["6 Agustus 1945", "9 Agustus 1945", "17 Agustus 1945", "15 Agustus 1945"], c: 0 },
+            { q: "Raja terkenal dari Kerajaan Majapahit yang didampingi oleh Mahapatih Gajah Mada adalah...", a: ["Raden Wijaya", "Hayam Wuruk", "Jayanegara", "Kertanegara"], c: 1 },
+            { q: "Gerakan Reformasi Gereja di Eropa pada abad ke-16 dipelopori oleh...", a: ["Martin Luther", "John Calvin", "Paus Leo X", "Erasmus"], c: 0 },
+            { q: "Pesawat terbang bermotor pertama berhasil diterbangkan pada tahun 1903 oleh...", a: ["Wright Bersaudara", "Montgolfier Bersaudara", "Henry Ford", "Alexander Graham Bell"], c: 0 },
+            { q: "Tragedi Holocaust pada Perang Dunia II merupakan pembantaian massal yang dilakukan oleh rezim Nazi terhadap kaum...", a: ["Yahudi", "Slavia", "Romani", "Armenia"], c: 0 },
+            { q: "Peristiwa Bandung Lautan Api terjadi pada tahun...", a: ["1945", "1946", "1947", "1948"], c: 1 },
+            { q: "Peradaban Kuno Mesopotamia berkembang di antara dua sungai besar, yaitu...", a: ["Nil dan Kongo", "Tigris dan Eufrat", "Indus dan Gangga", "Yangtze dan Huang Ho"], c: 1 },
+            { q: "Pahlawan wanita dari Aceh yang gigih melawan penjajah Belanda hingga akhir hayatnya adalah...", a: ["R.A. Kartini", "Cut Nyak Dhien", "Dewi Sartika", "Martha Christina Tiahahu"], c: 1 },
+            { q: "Tokoh penjelajah Spanyol yang dianggap menemukan benua Amerika pada tahun 1492 adalah...", a: ["Amerigo Vespucci", "Christopher Columbus", "Ferdinand Magellan", "Vasco da Gama"], c: 1 },
+            { q: "Organisasi pergerakan nasional pertama di Indonesia yang didirikan pada 20 Mei 1908 adalah...", a: ["Syarikat Islam", "Budi Utomo", "Indische Partij", "PNI"], c: 1 },
+            { q: "Pandemi flu paling mematikan dalam sejarah modern yang meletus pada tahun 1918 disebut...", a: ["Flu Spanyol", "Black Death", "Flu Burung", "SARS"], c: 0 },
+            { q: "Situs bersejarah Machu Picchu di Peru dibangun oleh peradaban...", a: ["Aztec", "Inka", "Maya", "Olmec"], c: 1 },
+            { q: "Peristiwa serangan teroris ke gedung World Trade Center (WTC) di New York terjadi pada tanggal...", a: ["11 September 2001", "11 September 2000", "12 Oktober 2002", "9 November 1989"], c: 0 },
+            { q: "Raja Babilonia yang terkenal dengan kodifikasi hukum tertulis pertamanya (Hukum Hammurabi) adalah...", a: ["Nebukadnezar", "Hammurabi", "Cyrus Agung", "Darius I"], c: 1 },
+            { q: "Kerajaan Islam pertama di pulau Jawa adalah Kerajaan...", a: ["Demak", "Mataram Islam", "Banten", "Cirebon"], c: 0 },
+            { q: "Penemu sistem operasi World Wide Web (WWW) yang mengubah dunia internet pada tahun 1989 adalah...", a: ["Bill Gates", "Steve Jobs", "Tim Berners-Lee", "Mark Zuckerberg"], c: 2 }
+        ];
+
+        // System Variables
+        let currentQuestion = 0;
+        let userAnswers = new Array(historyQuestions.length).fill(null);
+        let timerSeconds = 90 * 60; // 90 Menit
+        let timerInterval = null;
+        let timerStarted = false;
+        
+        // Security & Anti-Cheat Variables
+        let cheatCount = 0;
+        let cheatLogs = [];
+        let quizActive = false;
+
+        // User Data
+        let userData = { name: '', class: '', school: '' };
+
+        // DOM Elements
+        const identitySection = document.getElementById('identity-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultSection = document.getElementById('result-section');
+        const warningPopup = document.getElementById('warning-popup');
+        const warningMessage = document.getElementById('warning-message');
+        const validationMsg = document.getElementById('validation-msg');
+
+        function startQuiz() {
+            const name = document.getElementById('fullname').value.trim();
+            const className = document.getElementById('class-name').value.trim();
+            const school = document.getElementById('school').value.trim();
+
+            if (!name || !className || !school) {
+                alert('Mohon lengkapi Nama, Kelas, dan Sekolah terlebih dahulu!');
+                return;
+            }
+
+            userData = { name, class: className, school };
+
+            identitySection.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+
+            quizActive = true;
+            setupSecurity();
+            renderQuestion();
+        }
+
+        function startTimer() {
+            if (timerStarted) return;
+            timerStarted = true;
+
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                
+                let mins = Math.floor(timerSeconds / 60);
+                let secs = timerSeconds % 60;
+                
+                document.getElementById('timer-display').innerText = 
+                    `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz("Waktu Habis");
+                }
+            }, 1000);
+        }
+
+        function renderQuestion() {
+            validationMsg.style.display = 'none'; // Sembunyikan pesan peringatan setiap pindah soal
+            const qData = historyQuestions[currentQuestion];
+            document.getElementById('question-number').innerText = `Soal ${currentQuestion + 1} dari ${historyQuestions.length}`;
+            document.getElementById('question-text').innerText = `${currentQuestion + 1}. ${qData.q}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            qData.a.forEach((opt, idx) => {
+                const label = document.createElement('label');
+                label.className = 'option-label';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'option';
+                radio.value = idx;
+                
+                if (userAnswers[currentQuestion] === idx) {
+                    radio.checked = true;
+                }
+
+                radio.onchange = () => {
+                    validationMsg.style.display = 'none';
+                    userAnswers[currentQuestion] = idx;
+                    // Timer berjalan pas ketika mengklik salah satu jawaban pertama kali
+                    if (!timerStarted) {
+                        startTimer();
+                    }
+                };
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(opt));
+                optionsContainer.appendChild(label);
+            });
+
+            if (currentQuestion === historyQuestions.length - 1) {
+                document.getElementById('next-btn').innerText = 'Selesaikan Ujian';
+            } else {
+                document.getElementById('next-btn').innerText = 'Selanjutnya';
+            }
+        }
+
+        function nextQuestion() {
+            // Validasi: Wajib memilih jawaban sebelum dapat lanjut
+            if (userAnswers[currentQuestion] === null) {
+                validationMsg.style.display = 'block';
+                return;
+            }
+
+            if (currentQuestion < historyQuestions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                finishQuiz("Selesai");
+            }
+        }
+
+        // Anti-Cheat System
+        function setupSecurity() {
+            document.addEventListener('visibilitychange', () => {
+                if (quizActive && document.hidden) {
+                    registerViolation("Keluar dari tab / berpindah aplikasi");
+                }
+            });
+
+            window.addEventListener('blur', () => {
+                if (quizActive) {
+                    registerViolation("Meninggalkan jendela halaman ujian");
+                }
+            });
+
+            document.addEventListener('contextmenu', (e) => {
+                if (quizActive) {
+                    e.preventDefault();
+                    registerViolation("Mencoba melakukan Klik Kanan");
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (!quizActive) return;
+
+                if (
+                    e.key === "F12" || 
+                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
+                    (e.ctrlKey && (e.key === 'u' || e.key === 'U')) ||
+                    (e.ctrlKey && (e.key === 'c' || e.key === 'C')) ||
+                    (e.ctrlKey && (e.key === 'v' || e.key === 'V'))
+                ) {
+                    e.preventDefault();
+                    registerViolation(`Mencoba pintasan keyboard (${e.key})`);
+                }
+            });
+        }
+
+        function registerViolation(reason) {
+            cheatCount++;
+            const timestamp = new Date().toLocaleTimeString();
+            cheatLogs.push(`[${timestamp}] ${reason}`);
+            
+            showWarning(`Peringatan Violasi Kecurangan #${cheatCount}: Anda terdeteksi ${reason}. Kebiasaan ini dicatat dan dilaporkan!`);
+            sendCheatReportToAdmin(reason);
+        }
+
+        function showWarning(msg) {
+            warningMessage.innerText = msg;
+            warningPopup.classList.remove('hidden');
+        }
+
+        function closeWarning() {
+            warningPopup.classList.add('hidden');
+        }
+
+        function sendCheatReportToAdmin(reason) {
+            const reportData = {
+                pengembang: "Muhammad Naufal (Cilegon)",
+                siswa: userData,
+                alasan: reason,
+                totalViolations: cheatCount,
+                waktu: new Date().toLocaleString()
+            };
+            console.warn("PELANGGARAN DIKIRIM KE PEMEGANG WEB/MAPEL:", reportData);
+        }
+
+        function finishQuiz(statusReason) {
+            quizActive = false;
+            clearInterval(timerInterval);
+
+            quizSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+
+            let correctCount = 0;
+            historyQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.c) {
+                    correctCount++;
+                }
+            });
+
+            let finalScore = Math.round((correctCount / historyQuestions.length) * 100);
+
+            document.getElementById('completion-message').innerText = 
+                `Selamat ${userData.name}, soal telah selesai dan waktu sudah habis, ini adalah nilai anda:`;
+
+            document.getElementById('score-display').innerText = finalScore;
+
+            const cheatDisplay = document.getElementById('cheat-status-display');
+            if (cheatCount === 0) {
+                cheatDisplay.innerText = "JUJUR";
+                cheatDisplay.className = "cheat-status cheat-jujur";
+            } else {
+                const uniqueReasons = [...new Set(cheatLogs)].join(", ");
+                cheatDisplay.innerText = `Terdeteksi Kecurangan (${cheatCount} Kali)\nAlasan: ${uniqueReasons}`;
+                cheatDisplay.className = "cheat-status cheat-curang";
+            }
+
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            historyQuestions.forEach((q, idx) => {
+                const item = document.createElement('div');
+                item.className = 'review-item';
+
+                const userAnsIdx = userAnswers[idx];
+                const isCorrect = userAnsIdx === q.c;
+
+                let userAnsText = userAnsIdx !== null ? q.a[userAnsIdx] : 'Tidak Dijawab';
+                let correctAnsText = q.a[q.c];
+
+                let html = `<div class="review-q">${idx + 1}. ${q.q}</div>`;
+
+                if (isCorrect) {
+                    html += `<div class="user-ans-correct">Jawaban Anda: ${userAnsText} (Benar)</div>`;
+                } else {
+                    html += `<div class="user-ans-wrong">Jawaban Anda: ${userAnsText} (Salah)</div>`;
+                    html += `<div class="correct-ans">Jawaban yang Benar: ${correctAnsText}</div>`;
+                }
+
+                item.innerHTML = html;
+                reviewContainer.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
